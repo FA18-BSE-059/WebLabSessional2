@@ -6,7 +6,7 @@ $(document).ready(function () {
         $("#noRecordRow").remove();
         var addRecord = $("#updateBtn").is(":disabled");
         var name = $("input[name='name']").val();
-        var gender = $("input[name='gender']").val();
+        var gender = $("input[name='gender']:checked").val();
         var age = $("input[name='age']").val();
         var city = $("select[name='city']").val();
         var rowID = addRecord ? ("row____" + (currentRowID++)) : window.updateID;
@@ -30,11 +30,12 @@ $(document).ready(function () {
 
         $("#addBtn").removeAttr("disabled");
         $("#updateBtn").attr("disabled", "disabled");
+        event.target.reset();
     });
     $("#list tbody").on("click", ".update", function (e) {
         window.updateID = $(e.currentTarget.closest('tr')).attr("id");
-        $("input[name='name']").val($("#"+window.updateID+" .name").text());
-        $("input[name='gender']").val($("#"+window.updateID+" .gender").text());
+        $("input[name='name']").val($("#" + window.updateID + " .name").text());
+        $("input[name='gender']#"+$("#"+window.updateID+" .gender").text().toLowerCase()).prop('checked',true);
         $("input[name='age']").val($("#"+window.updateID+" .age").text());
         $("select[name='city']").val($("#" + window.updateID + " .city").text());
         $("#updateBtn").removeAttr("disabled");
