@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=0, initial-scale=1.0">
+    <title>Assignment Web Technologies</title>
+    <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+    <div class="container">
+        <div class="left" style="display: none;">
+            <div class="header">
+                <h2 class="animation a1">Add/Update Person Form</h2>
+            </div>
+            <div class="form">
+                <form id="personAddUpdateForm">
+                    <input type="text" class="form-field animation a2" placeholder="Name" name="name" id="name" required>
+                    <div style="margin-top: 12px;" class="animation a3">
+                        <label>Gender: </label>
+                        <input type="radio" name="gender" value="Male" id="male" checked> Male
+                        <input type="radio" name="gender" value="Female" id="female"> Female
+                    </div>
+                    <input type="number" name="age" class="form-field animation a4" placeholder="Age" id="age" min="0" required>
+                    <select name="city" class="form-field animation a4" id="city">
+                        <option value="Lahore">Lahore</option>
+                        <option value="Islamabad">Islamabad</option>
+                        <option value="Karachi">Karachi</option>
+                    </select>
+                    <br>
+
+                    <button type="reset" class="secondary animation a6">Reset</button>
+                    <button type="submit" class="animation a6" id="addBtn" style="float: right;">Submit</button>
+                    <button type="submit" class="animation a6" id="updateBtn" style="float: right;margin-right: 2px;" disabled>Update</button>
+                </form>
+            </div>
+        </div>
+        <div class="right">
+            <h1 class="animation a1">Lists of Persons</h1>
+            <table class="animation a2" id="list">
+                <thead>
+                    <tr>
+                        <th>Album ID</th>
+                        <th>Title</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr id="noRecordRow">
+                        <td colspan="5" class="text-center" >
+                                Fetching Records
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            
+        </div>
+    </div>
+    <script src="./jquery.js"></script>
+    <script src="./view-albums.js"></script>
+</body>
+</html>

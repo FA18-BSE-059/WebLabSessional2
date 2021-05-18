@@ -1,55 +1,54 @@
 window.currentRowID = 0;
 window.updateID = undefined;
 $(document).ready(function () {
-    $("#personAddUpdateForm").submit(function (event) {
+    $("#personUpdateForm").submit(function (event) {
         event.preventDefault();
-        $("#noRecordRow").remove();
-        var addRecord = $("#updateBtn").is(":disabled");
-        var name = $("input[name='name']").val();
-        var gender = $("input[name='gender']:checked").val();
-        var age = $("input[name='age']").val();
-        var city = $("select[name='city']").val();
-        var rowID = addRecord ? ("row____" + (currentRowID++)) : window.updateID;
-        console.log(rowID);
-        if (addRecord) {
-            $("#list tbody").append(function () {
-                return "<tr id=\"" + rowID + "\"></tr>";
-            });
-        }
-        
-        $("#"+rowID).html(function () {
-            return "<td class=\"name\">" + name + "</td>" +
-                "<td class=\"gender\">" + gender + "</td>" +
-                "<td class=\"age\">" + age + "</td>" +
-                "<td class=\"city\">" + city + "</td>" +
-                "<td>" +
-                "<button class=\"update\">Update</button>" +
-                "<button class=\"delete\">Delete</button>" +
-                "</td > ";
+        var email = $("input[name='email']").val();
+        var id = $("input[name='userId']").val();
+        $.ajax({
+            url: "https://jsonplaceholder.typicode.com/users/"+id,
+            type: "PUT",
+            beforeSend: function () {
+                $("#updateBtn").text("Updating").attr("disable", "disabled");
+            }
+        }).done(function (response) {
+            event.target.reset();
+            $("#" + id+ " .email").text(email);
+            $("#updateFormDiv").hide();
+        }).catch(function (error) {
+            $("#updateBtn").text("Update").removeAttr("disable");
+            console.log(error);
+            alert("An Error Occured while Updating Email. Please see Console for Error Details.");
         });
-
-        $("#addBtn").removeAttr("disabled");
-        $("#updateBtn").attr("disabled", "disabled");
-        event.target.reset();
     });
+    $("#cancelBtnBtn").click(function () {
+        $("#updateFormDiv").hide();
+    })
     $("#list tbody").on("click", ".update", function (e) {
         window.updateID = $(e.currentTarget.closest('tr')).attr("id");
-        $("input[name='name']").val($("#" + window.updateID + " .name").text());
-        $("input[name='gender']#"+$("#"+window.updateID+" .gender").text().toLowerCase()).prop('checked',true);
-        $("input[name='age']").val($("#"+window.updateID+" .age").text());
-        $("select[name='city']").val($("#" + window.updateID + " .city").text());
-        $("#updateBtn").removeAttr("disabled");
-        $("#addBtn").attr("disabled", "disabled");
-    }).on("click",".delete",function (e) {
-        if (confirm("Are you sure you want to delete this Record")) {
-            e.currentTarget.closest('tr').remove();
-            if ($('#list tbody tr').length <= 0) {
-                $("#list tbody").append(function () {
-                    return "<tr id=\"noRecordRow\">" +
-                    "<td colspan=\"5\" class=\"text-center\">No Record Found</td>" +
-                    "</tr>";
-                });
-            }
-        }
+        $("input[name='email']").val($("#" + window.updateID + " .email").text());
+        $("input[name='userId']").val(window.updateID);
+        $("#updateFormDiv").show();
+    });
+    $.ajax({
+        url: "https://jsonplaceholder.typicode.com/users",
+        type: "GET"
+    }).done(function (response) {
+        console.log(response);
+        response.map(function (value) {
+            $("#noRecordRow").remove();
+            $("#list tbody").append(function () {
+                return "<tr id=\"" + value.id + "\">" +
+                    "<td class=\"name\">" + value.name + "</td>" +
+                    "<td class=\"email\">" + value.email + "</td>" +
+                    "<td>" +
+                    "<a href=\"./view-albums.html?user="+value.id+"\"><button type=\"button\">View Albums</button></a>" +
+                    "<button class=\"update\">Update User Email</button>" +
+                    "</td></tr>";
+            });
+        })
+    }).catch(function (error) {
+        console.log(error);
+        $("#noRecordRow td").text("Unable to fetch Record. Please see Console for Errors");
     })
 });
