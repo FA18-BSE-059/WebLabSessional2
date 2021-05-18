@@ -35,8 +35,8 @@ $(document).ready(function () {
     $("#addNewAlbum").click(function () {
         $("#albumFormTitle").text("Add Album Record");
         $("input").val("");
-        $("#addUpdateAlbums").show();
         $("#submitBtn").text("Add Record");
+        $("#addUpdateAlbums").show();
     });
 
     $("#cancelBtnBtn").click(function () {
@@ -47,8 +47,8 @@ $(document).ready(function () {
         window.updateID = $(e.currentTarget.closest('tr')).attr("id");
         $("input[name='title']").val($("#" + window.updateID + " .title").text());
         $("input[name='albumId']").val(window.updateID);
-        $("#addUpdateAlbums").show();
         $("#submitBtn").text("Update Record");
+        $("#addUpdateAlbums").show();
     }).on("click", ".delete", function (e) {
         if (confirm("Are you sure you want to delete this Record")) {
             var rowID = $(e.currentTarget.closest('tr')).attr("id");
@@ -102,6 +102,7 @@ $(document).ready(function () {
                     "<button class=\"delete\" type=\"button\">Delete</button>" +
                     "</td>";
             });
+            $("#addUpdateAlbums").hide();
         }).catch(function (error) {
             $("#submitBtn").text(addRecord ? "Add Record": "Update Record").removeAttr("disabled");
             console.log(error);
